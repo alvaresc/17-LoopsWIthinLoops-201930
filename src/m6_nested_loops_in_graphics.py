@@ -4,8 +4,8 @@ in the context of TWO-DIMENSIONAL GRAPHICS.
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and Sam Alvares.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
 
@@ -81,9 +81,45 @@ def draw_L(window, circle, r, c):
     and m and n are small, positive integers.
     """
     # -------------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #     The testing code is already written for you (above).
     # -------------------------------------------------------------------------
+
+    original_x = circle.center.x
+    original_y = circle.center.y
+    radius = circle.radius
+
+    x = original_x
+    y = original_y
+    for i in range(r+3):  # Loop through the rows
+        for j in range(3):  # Loop through the columns
+            new_circle = rg.Circle(rg.Point(x, y), radius)
+            new_circle.fill_color = circle.fill_color
+            new_circle.attach_to(window)
+            window.render(0.01)
+            x = x + (2 * radius)  # Move x to the right, for next circle
+        if i == r:
+            x_final = x
+            y_final = y
+        y = y + 2 * radius  # Move y down, for the next row of circles
+
+        x = original_x  # Reset x to the left-edge, for the next row
+
+    x_leg_og = x_final
+    y_leg_og = y_final
+
+    x_leg = x_leg_og
+    y_leg = y_leg_og
+    for i in range(3):
+        for j in range(c):
+            new_circle = rg.Circle(rg.Point(x_leg, y_leg), radius)
+            new_circle.fill_color = circle.fill_color
+            new_circle.attach_to(window)
+            window.render(0.01)
+            x_leg = x_leg + (2 * radius)  # Move x to the right, for next circle
+
+        y_leg = y_leg + 2 * radius  # Move y down, for the next row of circles
+        x_leg = x_leg_og  # Reset x to the left-edge, for the next row
 
 
 def run_test_draw_wall_on_right():
@@ -125,6 +161,28 @@ def draw_wall_on_right(rectangle, n, window):
     # TODO: 3. Implement and test this function.
     #     The testing code is already written for you (above).
     # -------------------------------------------------------------------------
+
+    og_TL = rectangle.get_upper_left_corner()
+    og_BR = rectangle.get_lower_right_corner()
+
+    h = rectangle.get_height()
+    w = rectangle.get_width()
+
+    TL = og_TL
+    BR = og_BR
+    for k in range(n):
+        for j in range(n):
+            rect = rg.Rectangle(TL,BR)
+            rect.attach_to(window)
+            TL.x = TL.x - j*w
+            BR.x = BR.x - j*w
+            window.render(.01)
+        TL.x = og_TL
+        TL.y = TL.y + k*h
+        BR.x = og_BR
+        BR.y = BR.y + k*h
+
+
 
 
 # -----------------------------------------------------------------------------
